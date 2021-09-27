@@ -7,6 +7,8 @@ export const onCreateSensorValue = /* GraphQL */ `
       id
       sensorId
       value
+      temp
+      humidity
       isWarning
       timestamp
       createdAt

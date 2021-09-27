@@ -74,6 +74,8 @@ const SensorScreen = () => {
         sensorType={sensor.sensorType}
         gaugeColor={GetSensorStatusColor(sensorValue.isWarning)}
         value={sensorValue.value}
+        temp={sensorValue.temp}
+        humidity={sensorValue.humidity}
         time={new Date(sensorValue.timestamp).toLocaleTimeString()}
       />
   );

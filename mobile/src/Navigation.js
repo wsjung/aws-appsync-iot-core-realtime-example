@@ -26,7 +26,7 @@ const Navigation = () => {
           name="Sensor"
           component={SensorScreen}
           options={{
-            title: 'Sensor View',
+            title: 'Real time sensor data',
           }}
         />
       </Stack.Navigator>

@@ -10,7 +10,7 @@ const App = () => {
 };
 
 const signUpConfig = {
-  header: 'Register for Sensor View',
+  header: 'Register',
   hideAllDefaults: true,
   signUpFields: [
     {

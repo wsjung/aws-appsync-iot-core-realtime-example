@@ -5,7 +5,12 @@ import App from './App';
 import {name as appName} from './app.json';
 import awsconfig from './aws-exports';
 
-Amplify.configure(awsconfig);
+Amplify.configure({
+  ...awsconfig,
+  Analytics: {
+    disabled: true,
+  },
+});
 
 console.disableYellowBox = true;
 

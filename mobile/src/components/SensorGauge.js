@@ -2,7 +2,7 @@ import React from 'react';
 import {View, StyleSheet, Text } from 'react-native';
 
 
-const SensorGauge = ({sensorType, value, time}) => {
+const SensorGauge = ({temp, humidity, time}) => {
 
   return (
     <View style={styles.container}>
@@ -19,7 +19,9 @@ const SensorGauge = ({sensorType, value, time}) => {
           />
       </View> */}
       <View style={styles.sensorRow}>
-        <Text style={styles.value}>{sensorType}: {value} C</Text>
+        {/* <Text style={styles.value}>{sensorType}: {value} C</Text> */}
+        <Text style={styles.value}>Temp: {temp} C</Text>
+        <Text style={styles.value}>Humidity: {humidity}%</Text>
       </View>
       <View style={styles.row}>
         <Text style={styles.value}>{time}</Text>
