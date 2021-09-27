@@ -7,10 +7,10 @@ const SensorGauge = ({sensorType, gaugeColor, value, time}) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.titleRow}>
+      {/* <View style={styles.titleRow}>
         <Text style={styles.title}>{sensorType}</Text>
-      </View>
-      <View style={styles.row}>
+      </View> */}
+      {/* <View style={styles.row}>
         <Speedometer 
               value={value} 
               totalValue={100} 
@@ -18,9 +18,9 @@ const SensorGauge = ({sensorType, gaugeColor, value, time}) => {
               outerColor="#d3d3d3"
               internalColor={gaugeColor} 
           />
-      </View>
-      <View style={styles.row}>
-        <Text style={styles.value}>{value}</Text>
+      </View> */}
+      <View style={styles.sensorRow}>
+        <Text style={styles.value}>{sensorType}: {value} C</Text>
       </View>
       <View style={styles.row}>
         <Text style={styles.value}>{time}</Text>
@@ -40,9 +40,9 @@ const styles = StyleSheet.create({
         fontWeight:'bold'
     },
     value: {
-        fontSize:28
+        fontSize:45
     },
-    titleRow: {
+    sensorRow: {
         flex: 1,
         marginTop: 45,
         alignSelf: 'center',

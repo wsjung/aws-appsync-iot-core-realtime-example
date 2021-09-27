@@ -10,3 +10,6 @@ Amplify.configure(awsconfig);
 console.disableYellowBox = true;
 
 AppRegistry.registerComponent(appName, () => App);
+AppRegistry.runApplication(appName, {
+    rootTag: document.getElementById('root'),
+});
