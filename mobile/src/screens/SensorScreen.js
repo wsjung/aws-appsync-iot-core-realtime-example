@@ -72,8 +72,9 @@ const SensorScreen = () => {
     sensorValue.value === undefined ? <Activity title="Fetching Sensor"/> :
       <SensorGauge 
         sensorType={sensor.sensorType}
-        gaugeColor={GetSensorStatusColor(sensorValue.isWarning)}
+        gaugeColor={GetSensorStatusColor(sensorValue.jjisWarning)}
         value={sensorValue.value}
+        brightness={sensorValue.brightness}
         temp={sensorValue.temp}
         humidity={sensorValue.humidity}
         time={new Date(sensorValue.timestamp).toLocaleTimeString()}
