@@ -1,9 +1,8 @@
 import React from 'react';
 import {View, StyleSheet, Text } from 'react-native';
-import Speedometer from 'react-native-speedometer-chart'
 
 
-const SensorGauge = ({sensorType, gaugeColor, value, time}) => {
+const SensorGauge = ({sensorType, value, time}) => {
 
   return (
     <View style={styles.container}>

@@ -1,16 +1,12 @@
 import React from 'react';
-import { StatusBar } from 'react-native';
-import { withAuthenticator } from 'aws-amplify-react-native'
+import {StatusBar} from 'react-native';
+import {withAuthenticator} from 'aws-amplify-react-native';
 
-import Navigation from './Navigation'
+import Navigation from './Navigation';
 
 const App = () => {
-  
   StatusBar.setBarStyle('light-content', true);
-
-  return (
-    <Navigation />
-  );
+  return <Navigation />;
 };
 
 const signUpConfig = {
@@ -34,6 +30,6 @@ const signUpConfig = {
       displayOrder: 2,
     },
   ],
-}
+};
 
 export default withAuthenticator(App, {signUpConfig});
