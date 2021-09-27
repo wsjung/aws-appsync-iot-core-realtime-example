@@ -1,14 +1,15 @@
 import React from 'react';
 import {View, StyleSheet, Text } from 'react-native';
 
-
 const SensorGauge = ({brightness, temp, humidity, time}) => {
+
+  const temp_F = temp * 9 / 5 + 32;
 
   return (
     <View style={styles.container}>
       <View style={styles.sensorRow}>
         <Text style={styles.value}>Brightness: {brightness}</Text>
-        <Text style={styles.value}>Temp: {temp} C</Text>
+        <Text style={styles.value}>Temp: {temp_F}°F</Text>
         <Text style={styles.value}>Humidity: {humidity}%</Text> 
       </View>
       <View style={styles.row}>
