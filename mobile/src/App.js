@@ -14,7 +14,7 @@ const App = () => {
 };
 
 const signUpConfig = {
-  header: 'Register for Sensor View',
+  header: 'Register for SMLCS',
   hideAllDefaults: true,
   signUpFields: [
     {

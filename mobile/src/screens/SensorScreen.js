@@ -127,19 +127,19 @@ const SensorScreen = () => {
 
   return (
 
-    sensorValueTe.value === undefined ? <Activity title="Fetching Sensor"/> :
+    sensorValueTe.value === undefined || sensorValueBr.value === undefined ? <Activity title="Fetching Sensors"/> :
     <View style={styles.container}>
-      <SensorGauge 
-        sensorType={sensorTe.sensorType}
-        value={sensorValueTe.value}
-        unit={"C"}
-        time={new Date(sensorValueTe.timestamp).toLocaleTimeString()}
-      />
       <SensorGauge 
         sensorType={sensorBr.sensorType}
         value={sensorValueBr.value}
         unit={"C"}
         time={new Date(sensorValueBr.timestamp).toLocaleTimeString()}
+      />
+      <SensorGauge 
+        sensorType={sensorTe.sensorType}
+        value={sensorValueTe.value}
+        unit={"C"}
+        time={new Date(sensorValueTe.timestamp).toLocaleTimeString()}
       />
     </View>
   );
