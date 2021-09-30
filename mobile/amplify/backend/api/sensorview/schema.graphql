@@ -25,3 +25,9 @@ type Sensor
 type Query {
   getSensor(sensorId: String!): Sensor @function(name: "sensorview-get-sensor-${env}")
 }
+
+type UserBrightness @model{
+  id: ID!
+  value: Float!
+  timestamp: AWSTimestamp!
+}
