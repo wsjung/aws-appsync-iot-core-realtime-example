@@ -7,22 +7,26 @@ import SensorScreen from './screens/SensorScreen';
 import {View, Text, Button, TextInput, StyleSheet} from 'react-native';
 
 // THIS IS FOR PUBLISHING
-import Amplify, { PubSub } from 'aws-amplify';
-import { AWSIoTProvider } from '@aws-amplify/pubsub';
+import Amplify, {PubSub} from 'aws-amplify';
+import {AWSIoTProvider} from '@aws-amplify/pubsub';
+
+// import pubsub mqtt configs
+import settings from './amplify_pubsub_settings.json';
 
 // Apply plugin with configuration
-Amplify.addPluggable(new AWSIoTProvider({
-  aws_pubsub_region: 'us-west-2',
-  aws_pubsub_endpoint: 'wss:a82gcxlitg5l8-ats.iot.us-west-2.amazonaws.com/mqtt',
-}));
-
+Amplify.addPluggable(
+  new AWSIoTProvider({
+    aws_pubsub_region: settings.region,
+    aws_pubsub_endpoint: settings.endpoint,
+  }),
+);
 
 const Navigation = () => {
   function HomeScreen({navigation}) {
     return (
       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
         <Text style={{fontSize: 20}}>Smart Mixed-Lighting Control System</Text>
-        <View style={{flex: 0.25}}></View>
+        <View style={{flex: 0.25}} />
         <Button
           title="Sensor Data Panel"
           onPress={() => navigation.navigate('Sensor')}
@@ -51,6 +55,66 @@ const Navigation = () => {
     );
   }
 
+  function PDLCControl({navigation}) {
+    const [number, onChangeNumber] = useState(null);
+    const [fixNumber, onChangeFixNumber] = useState(null);
+    const [transparency, onChangeTransparency] = useState('N/A');
+
+    function textHandler(num) {
+      onChangeNumber(num); // udpate textinput display
+
+      const floatnum = parseFloat(num);
+      floatnum > 100 ? onChangeFixNumber(100) : onChangeFixNumber(floatnum);
+      // TODO: ADD ALERT IF VALUE OUT OF RANGE
+    }
+
+    async function publishTransparency() {
+      if (isNaN(fixNumber)) {
+        console.log('input is NaN, not publishing');
+      } else {
+        console.log('publishing', fixNumber);
+        const pubsub_out = await PubSub.publish(
+          settings.transparency_topic,
+          {value: fixNumber},
+          {provider: 'AWSIoTProvider'},
+        );
+        console.log('published, output: ', pubsub_out);
+      }
+    }
+
+    function submitHandler() {
+      // on submit,
+      onChangeTransparency(fixNumber); // (1) display the fixed brightness
+      publishTransparency(); // (2) publish to iot mqtt
+    }
+
+    return (
+      <View
+        style={{flex: 1, alignItems: 'center', justifyContent: 'flex-start'}}>
+        <View style={{margin: 40, padding: 40}}>
+          <Text style={styles.currBrText}>
+            Currently set transparency: {transparency}
+          </Text>
+        </View>
+        <Text style={styles.setBrText}>Set transparency:</Text>
+        <View>
+          <TextInput
+            style={styles.input}
+            onChangeText={num => textHandler(num)}
+            onSubmitEditing={submitHandler}
+            value={number}
+            // maxLength={4}
+            keyboardType="numeric"
+          />
+          <Button title="set" onPress={submitHandler} />
+          {/* <TouchableHighlight onPress={submitHandler}>
+            <Text>Set</Text>
+          </TouchableHighlight> */}
+        </View>
+      </View>
+    );
+  }
+
   function BrightnessControl({navigation}) {
     const [number, onChangeNumber] = useState(null);
     const [fixNumber, onChangeFixNumber] = useState(null);
@@ -65,23 +129,23 @@ const Navigation = () => {
     }
 
     async function publishBrightness() {
-      console.log("publishing", fixNumber);
-      const pubsub_out = await PubSub.publish('test-RN/set-brightness', { value: fixNumber}, { provider: 'AWSIoTProvider' });
-      console.log("published, output: ", pubsub_out);
+      if (isNaN(fixNumber)) {
+        console.log('input is NaN, not publishing');
+      } else {
+        console.log('publishing', fixNumber);
+        const pubsub_out = await PubSub.publish(
+          settings.brightness_topic,
+          {value: fixNumber},
+          {provider: 'AWSIoTProvider'},
+        );
+        console.log('published, output: ', pubsub_out);
+      }
     }
 
     function submitHandler() {
-      // on submit, (1) display the fixed brightness (2) publish 
-      onChangeBrightness(fixNumber);
-      publishBrightness();
-      // textHandler(number);
-      // publishBrightness();
-      
-      //Auth.currentCredentials().then(info => {
-      //  const cognitoIdentityId = info.identityId;
-      //  console.log("############## COGNITO IDENTITY ID: ", cognitoIdentityId);
-      //});
-      // TODO: PUBLISH TO IOT TOPIC
+      // on submit,
+      onChangeBrightness(fixNumber); // (1) display the fixed brightness
+      publishBrightness(); // (2) publish to iot mqtt
     }
 
     return (
@@ -106,57 +170,6 @@ const Navigation = () => {
           {/* <TouchableHighlight onPress={submitHandler}>
             <Text>Set</Text>
           </TouchableHighlight> */}
-        </View>
-      </View>
-    );
-  }
-
-  function PDLCControl({navigation}) {
-    const [number, onChangeNumber] = useState(null);
-    const [fixNumber, onChangeFixNumber] = useState(null);
-    const [transparency, onChangeTransparency] = useState('N/A');
-
-    function textHandler(num) {
-      onChangeNumber(num); // udpate textinput display
-
-      const floatnum = parseFloat(num);
-      floatnum > 100 ? onChangeFixNumber(100) : onChangeFixNumber(floatnum);
-      // TODO: ADD ALERT IF VALUE OUT OF RANGE
-    }
-
-    async function publishTransparency() {
-      console.log("publishing", fixNumber);
-      const pubsub_out = await PubSub.publish('test-RN/set-transparency', { value: fixNumber}, { provider: 'AWSIoTProvider' });
-      console.log("published, output: ", pubsub_out);
-    }
-
-    function submitHandler() {
-      // on submit, (1) display the fixed brightness (2) publish 
-      onChangeTransparency(fixNumber);
-      publishTransparency();
-    }
-
-
-    // TODO: ADD A CLEAR BUTTON
-    return (
-      <View
-        style={{flex: 1, alignItems: 'center', justifyContent: 'flex-start'}}>
-        <View style={{margin: 40, padding: 40}}>
-          <Text style={styles.currBrText}>
-            Currently set transparency: {transparency}
-          </Text>
-        </View>
-        <Text style={styles.setBrText}>Set transparency:</Text>
-        <View>
-          <TextInput
-            style={styles.input}
-            onChangeText={num => textHandler(num)}
-            onSubmitEditing={submitHandler}
-            value={number}
-            // maxLength={4}
-            keyboardType="numeric"
-          />
-          <Button title="set" onPress={submitHandler} /> 
         </View>
       </View>
     );
