@@ -1,20 +1,8 @@
 import React from 'react';
 import {View, StyleSheet, Text} from 'react-native';
-import Speedometer from 'react-native-speedometer-chart';
 
 const SensorGauge = ({sensorType, value, time, unit}) => {
   return (
-    // <View style={styles.container}>
-    //   <View style={styles.titleRow}>
-    //     <Text style={styles.title}>{sensorType}</Text>
-    //   </View>
-    //   <View style={styles.row}>
-    //     <Text style={styles.value}>{sensorType}: {value}{unit}</Text>
-    //   </View>
-    //   <View style={styles.row}>
-    //     <Text style={styles.value}>{time}</Text>
-    //   </View>
-    // </View>
     <View style={styles.row}>
       <Text style={styles.value}>
         {sensorType}: {value}
